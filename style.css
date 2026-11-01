@@ -377,3 +377,27 @@ footer a:hover {
     font-size: 13px;
   }
 }
+
+
+.payment-note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.payment-note strong {
+  color: var(--text);
+}
+
+.payment-note a {
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.payment-note a:hover {
+  text-decoration: underline;
+}
