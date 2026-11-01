@@ -2,10 +2,13 @@
 
 :root {
   --navy: #0B1F3A;
-  --orange: #FF6B1B;
+  --orange: #EF9304;
   --off-white: #F7F9FA;
-  --text: #18202a;
+  --white: #FFFFFF;
+  --text: #18202A;
   --muted: #667085;
+  --border: #E5E7EB;
+  --green: #128C7E;
 }
 
 * {
@@ -15,16 +18,15 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  padding: 40px 24px;
   background: var(--navy);
   color: var(--text);
   font-family: "Cairo", Arial, sans-serif;
 }
 
 .card {
-  width: min(100%, 560px);
+  width: min(100%, 620px);
+  margin: 0 auto;
   background: var(--off-white);
   border-radius: 28px;
   padding: 52px 34px 28px;
@@ -32,14 +34,18 @@ body {
   box-shadow: 0 24px 70px rgba(0, 0, 0, .25);
 }
 
-.badge {
+.badge,
+.pilot-badge {
   display: inline-block;
   padding: 7px 14px;
   border-radius: 999px;
-  background: rgba(255, 107, 27, .12);
+  background: rgba(239, 147, 4, .12);
   color: var(--orange);
   font-size: 12px;
   font-weight: 800;
+}
+
+.badge {
   letter-spacing: 1.2px;
 }
 
@@ -61,12 +67,95 @@ h1 {
 }
 
 .intro {
-  max-width: 460px;
+  max-width: 500px;
   margin: 22px auto 30px;
-  color: #4b5563;
+  color: #4B5563;
   line-height: 1.9;
   font-size: 15px;
 }
+
+/* Pilot Service */
+
+.service-box {
+  margin: 30px 0;
+  padding: 28px 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  text-align: right;
+}
+
+.service-box h2 {
+  margin: 15px 0 6px;
+  color: var(--navy);
+  font-size: 24px;
+}
+
+.service-box p {
+  color: #4B5563;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 12px 0 18px;
+  color: var(--navy);
+}
+
+.price strong {
+  color: var(--orange);
+  font-size: 38px;
+  line-height: 1;
+}
+
+.price span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.service-box ul {
+  margin: 20px 0;
+  padding: 0 20px 0 0;
+  color: #374151;
+  line-height: 2;
+  font-size: 14px;
+}
+
+.pilot-note {
+  padding: 12px 14px;
+  background: #FFF8EB;
+  border-radius: 12px;
+  color: #7A4B00 !important;
+  font-weight: 600;
+}
+
+/* CTA */
+
+.cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px 20px;
+  border-radius: 14px;
+  background: var(--navy);
+  color: var(--white);
+  text-decoration: none;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+  transition: .2s ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  background: #102B50;
+  box-shadow: 0 8px 24px rgba(11, 31, 58, .18);
+}
+
+/* Contact */
 
 .links {
   display: grid;
@@ -79,15 +168,15 @@ h1 {
   align-items: center;
   gap: 15px;
   padding: 15px 17px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 17px;
-  background: white;
+  background: var(--white);
   color: var(--text);
   text-decoration: none;
   transition: .2s ease;
 }
 
-.link:hover {
+a.link:hover {
   transform: translateY(-2px);
   border-color: var(--orange);
   box-shadow: 0 8px 24px rgba(11, 31, 58, .08);
@@ -101,7 +190,7 @@ h1 {
   place-items: center;
   border-radius: 12px;
   background: var(--navy);
-  color: white;
+  color: var(--white);
   font-weight: 800;
   font-size: 17px;
 }
@@ -119,23 +208,75 @@ h1 {
 .link strong {
   margin-top: 2px;
   font-size: 14px;
+}
+
+.link:not(.contact-info) strong {
   direction: ltr;
   text-align: right;
 }
 
+.contact-info {
+  cursor: default;
+}
+
+/* Footer */
+
 footer {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
-  color: #98a2b3;
+  align-items: center;
+  gap: 16px;
+  color: #98A2B3;
   font-size: 12px;
 }
 
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--orange);
+}
+
+/* Mobile */
+
 @media (max-width: 480px) {
+  body {
+    padding: 20px 12px;
+  }
+
   .card {
     padding: 40px 20px 24px;
     border-radius: 22px;
+  }
+
+  .service-box {
+    padding: 24px 18px;
+  }
+
+  .service-box h2 {
+    font-size: 21px;
+  }
+
+  .price strong {
+    font-size: 34px;
+  }
+
+  footer {
+    flex-direction: column;
+  }
+
+  .legal-links {
+    justify-content: center;
   }
 }
