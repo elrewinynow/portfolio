@@ -1999,3 +1999,26 @@ select {
     padding: 24px 18px;
   }
 }
+
+/* Shared layout for business information, terms and refunds. */
+.legal-document .legal-section-card {
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.legal-document .legal-section-body h2 {
+  font-size: clamp(1.12rem, 2vw, 1.35rem);
+}
+
+.legal-document .legal-section-body p,
+.legal-document .legal-section-body li {
+  font-size: 0.95rem;
+}
+
+.legal-document .legal-toc a {
+  font-size: 0.85rem;
+}
+
+.legal-document .legal-section-body a {
+  overflow-wrap: anywhere;
+}
