@@ -1120,11 +1120,13 @@ select {
 .legal-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 270px;
+  grid-template-areas: "content index";
   gap: 46px;
   align-items: start;
 }
 
 .legal-main {
+  grid-area: content;
   min-width: 0;
   display: grid;
   gap: 16px;
@@ -1136,6 +1138,7 @@ select {
 ======================================== */
 
 .legal-sidebar {
+  grid-area: index;
   position: relative;
 }
 
@@ -1703,6 +1706,7 @@ select {
 
   .legal-layout {
     grid-template-columns: 1fr;
+    grid-template-areas: "content";
   }
 
   .legal-sidebar {
