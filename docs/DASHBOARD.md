@@ -63,3 +63,7 @@ node dashboard/setup-owner.mjs
 - NOT RUN: تسجيل مفتاح المالك على admin ثم الدخول والتحقق الحي من الردود. يُستكمل بعد ظهور DNS في المتصفح، بالخطوة اليدوية للمالك. لا يُعد الانتقال مقبولًا نهائيًا قبل هذا التحقق.
 - لإعداد مفتاح العنوان الجديد فقط: node dashboard/setup-owner.mjs --admin. لحذف إعداد التسجيل المؤقت استخدم wrangler secret delete SETUP_HASH وSETUP_EXPIRES مع --config dashboard/wrangler.admin.jsonc. لا تحذف المفتاح القديم ولا جداول تاريخه.
 - النشر لاحقًا: npm ci ثم npm run build:dashboard ثم wrangler deploy --config dashboard/wrangler.admin.jsonc مع صلاحيات Cloudflare المناسبة لربط Custom Domain. لا تستخدم config العامل القديم لهذا العنوان. لا إغلاق للرابط القديم قبل نجاح دخول المالك إلى الجديد.
+
+### اكتمال دخول المالك على admin
+
+PASS — انتشر DNS وفتح المالك الموقع، واجتاز تحقق Cloudflare وسجل مفتاح admin ثم دخل بنفسه. الفحص الحي أكد عرض الردين الاصطناعيين وتفاصيل الرد والملاحظات السابقة دون تعديلها. أُغلق إعداد التسجيل المؤقت بحذف SETUP_HASH وSETUP_EXPIRES وإيقاف العملية المحلية. الرابط القديم ومفتاحه باقيان كما هما؛ لا يوجد نقل أو حذف للردود. عائق DNS السابق انتهى، واكتمل التحقق اليدوي المطلوب للانتقال.
