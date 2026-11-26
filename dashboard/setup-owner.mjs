@@ -3,9 +3,11 @@
 import http from 'node:http';
 import {spawn} from 'node:child_process';
 import {randomToken,digest} from './auth.js';
-const origin='https://elrewiny-brief-dashboard.mrelrewiny.workers.dev';
+const admin=process.argv.includes('--admin');
+const origin=admin?'https://admin.elrewiny.com':'https://elrewiny-brief-dashboard.mrelrewiny.workers.dev';
+const config=admin?'dashboard/wrangler.admin.jsonc':'dashboard/wrangler.jsonc';
 const token=randomToken(),expires=Date.now()+3600000;
-const child=spawn('powershell.exe',['-NoProfile','-Command','npm.cmd exec --yes --package=wrangler@4.168.0 -- wrangler secret bulk --config dashboard/wrangler.jsonc'],{windowsHide:true,stdio:['pipe','pipe','pipe']});
+const child=spawn('powershell.exe',['-NoProfile','-Command','npm.cmd exec --yes --package=wrangler@4.168.0 -- wrangler secret bulk --config '+config],{windowsHide:true,stdio:['pipe','pipe','pipe']});
 child.stdin.end(JSON.stringify({SETUP_HASH:await digest(token),SETUP_EXPIRES:String(expires)}));
 let output='';child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);
 const exit=await new Promise(resolve=>child.on('exit',resolve));if(exit!==0){console.error('Could not configure setup:',output);process.exit(1);}

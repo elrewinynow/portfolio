@@ -82,8 +82,8 @@ const bytes=text=>new TextEncoder().encode(text);
 const join=(...parts)=>Buffer.concat(parts.map(p=>Buffer.from(p)));
 const counter=n=>{const b=Buffer.alloc(4);b.writeUInt32BE(n);return b;};
 function der(raw){const integer=b=>{while(b.length>1&&b[0]===0)b=b.slice(1);if(b[0]&128)b=join([0],b);return join([2,b.length],b);};const r=integer(raw.slice(0,32)),s=integer(raw.slice(32));return join([48,r.length+s.length],r,s);}
-export async function identity(DB){
- const setupToken=randomToken(),env={DB,OWNER_EMAIL:'owner@example.test',DASHBOARD_ORIGIN:'https://dashboard.example',SETUP_HASH:await digest(setupToken),SETUP_EXPIRES:Date.now()+3600000};
+export async function identity(DB,origin="https://dashboard.example"){
+ const setupToken=randomToken(),env={DB,OWNER_EMAIL:'owner@example.test',DASHBOARD_ORIGIN:origin,SETUP_HASH:await digest(setupToken),SETUP_EXPIRES:Date.now()+3600000};
  DB.db.prepare("INSERT OR IGNORE INTO brief_settings VALUES('ip_salt','synthetic-auth-salt')").run();
  const keys=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']),jwk=await crypto.subtle.exportKey('jwk',keys.publicKey),rawId=crypto.getRandomValues(new Uint8Array(32)),id=b64(rawId);
  let flowCookie='',token='',userHandle='',count=0;

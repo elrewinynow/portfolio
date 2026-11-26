@@ -1,0 +1,12 @@
+{
+ "name":"elrewiny-brief-admin",
+ "account_id":"046dfdfbbef5bccb93d469ff723993ff",
+ "main":"admin-worker.js",
+ "compatibility_date":"2026-11-26",
+ "workers_dev":false,
+ "preview_urls":false,
+ "routes":[{"pattern":"admin.elrewiny.com","custom_domain":true}],
+ "assets":{"directory":"public","binding":"ASSETS","run_worker_first":true,"html_handling":"none"},
+ "vars":{"OWNER_EMAIL":"mrelrewiny@gmail.com","DASHBOARD_ORIGIN":"https://admin.elrewiny.com"},
+ "d1_databases":[{"binding":"DB","database_name":"elrewiny-brief","database_id":"f591c3ae-44b8-45b3-9bbc-c40a4acce92c"}]
+}
