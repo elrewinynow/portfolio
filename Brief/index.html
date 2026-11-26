@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>بريف جلسة التشخيص | أحمد الرويني</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Brief/brief.css" />
+    <script type="module" src="/Brief/brief.js"></script>
+  </head>
+  <body>
+    <header>
+      <a href="/" aria-label="أحمد الرويني — الرئيسية"
+        ><img
+          src="/images/elrewiny-logo.png"
+          alt="أحمد الرويني"
+          width="65" /></a
+      ><a href="https://elrewinynow.nzmly.com/l/hAfGMhHyxz">تفاصيل الجلسة ↗</a>
+    </header>
+    <main>
+      <div class="intro">
+        <span class="eyebrow">قبل ما نتقابل · ٣–٥ دقائق</span>
+        <h1>خلّينا نفهم <em>نشاطك.</em></h1>
+        <p>
+          النموذج ده هيساعدني أفهم نشاطك ووضعك التسويقي قبل الجلسة، عشان نستخدم
+          وقتنا في مناقشة التحدي والأولويات. جاوب على المتاح، وسيب أي سؤال مش
+          واضح. النموذج مش طلب تنفيذ حملة أو تصميم.
+        </p>
+        <div class="facts">
+          جلسة أونلاين ٦٠ دقيقة <span>•</span> فهم المشكلة وترتيب الأولويات
+        </div>
+      </div>
+      <noscript>فعّل JavaScript لملء النموذج والتنقل بين الخطوات.</noscript>
+      <section id="wizard" aria-label="بريف التشخيص">
+        <div class="progress-head">
+          <span id="step-label"></span><span id="step-count"></span>
+        </div>
+        <progress
+          id="progress"
+          max="6"
+          value="1"
+          aria-label="التقدم في النموذج"
+        ></progress>
+        <p class="hint">
+          الأسئلة بعلامة * فقط مطلوبة. إجاباتك بتفضل موجودة عند الرجوع بين
+          الخطوات داخل الصفحة.
+        </p>
+        <form id="brief-form" novalidate>
+          <div id="fields"></div>
+          <div class="trap" aria-hidden="true">
+            <label
+              >اترك هذا الحقل فارغًا<input
+                name="website_confirm"
+                tabindex="-1"
+                autocomplete="off"
+            /></label>
+          </div>
+          <p id="error" role="alert" tabindex="-1"></p>
+          <div class="actions">
+            <button type="button" id="back" class="secondary">→ السابق</button
+            ><button type="submit" id="next">التالي ←</button>
+          </div>
+        </form>
+        <p class="privacy">
+          هنستخدم بياناتك للتحضير للجلسة والتواصل معاك بخصوصها. اكتب روابط عامة
+          فقط، ومن غير كلمات مرور أو بيانات دخول أو بيانات شخصية لعملائك.
+        </p>
+      </section>
+      <section id="success" hidden tabindex="-1">
+        <span class="eyebrow">تم الإرسال ✓</span>
+        <h2>بياناتك وصلت، شكرًا ليك.</h2>
+        <p>
+          هراجع البريف قبل الجلسة عشان نركز على التحدي والأولويات. إرسال البريف
+          مش تأكيد لحجز الموعد؛ لو لسه ما حجزتش، اختار موعدك من صفحة الخدمة،
+          وتابع تأكيد الحجز على نظملي.
+        </p>
+        <p id="receipt"></p>
+        <a class="button" href="https://elrewinynow.nzmly.com/l/hAfGMhHyxz"
+          >صفحة الخدمة والحجز ↗</a
+        ><a href="/">العودة للموقع</a>
+      </section>
+    </main>
+    <footer>
+      أحمد الرويني · التشخيص يبدأ بفهم المشكلة <a href="/">العودة للموقع</a>
+    </footer>
+  </body>
+</html>
