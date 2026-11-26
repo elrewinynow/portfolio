@@ -76,3 +76,10 @@ PASS — انتشر DNS وفتح المالك الموقع، واجتاز تحق
 - PASS: الاختبارات الأربع عشرة، بما فيها وصول manifest والأيقونات دون قراءة DB، رفض البيانات الخاصة لغير المسجل، مقاسات PNG، سيناريو التثبيت بنقرة المستخدم والإلغاء وإرشادات المتصفح وإخفاء اللوحة في standalone.
 - PASS حي: Chrome أعاد installabilityErrors=[] وmanifest errors=[] للاسم والأيقونات على https://admin.elrewiny.com/manifest.webmanifest، وظهر زر «تثبيت التطبيق». فحص الهواتف الفعلية Android/iPhone NOT RUN؛ تعليمات التثبيت متاحة لهما.
 - الأيقونة ذاتها أضيفت إلى رؤوس صفحات الموقع الأساسي الخمس وصفحة البريف ضمنها، عبر images/favicon-32.png وimages/apple-touch-icon.png. نشر Render من main يقتصر على هذه الملفات؛ كود الداشبورد يبقى في فرعه ونشر Cloudflare المستقل. لا تعديل بيانات أو DNS أو خطة مدفوعة ضمن هذه الإضافة.
+
+### تحقق النشر النهائي للأيقونات
+
+- Cloudflare admin version: 411a61d8-da5a-4de7-81f6-48b7a7495600. Chrome installabilityErrors=[] وmanifest errors=[]؛ الدخول والردود ظاهران بعد النشر.
+- Render نشر main commit fdcee5ff5b4748c69c373a84aaa290f456b07c5c تلقائيًا، وظهرت الحالة Live وDeployed؛ لم نغير إعدادات Render أو نسجل الدخول بحساب مختلف.
+- PASS: تطابق HTTP HTML للصفحات الخمس مع المصدر الملتزم، وتطابق Apple touch PNG بايتًا. favicon PNG أُعيد ضغطه في المسار المنشور (بايتاته مختلفة)، لكن فحص الصورة 32×32 أكد صفر اختلاف في البكسلات.
+- مصدر PWA والفافيكون محفوظ على فرع codex/brief-dashboard commit cf56200695c4dcc69a78c7953e081d4c1e50c4ab. كود main يقتصر على تعديل الأيقونات للصفحات العامة. لا عمل مطلوب متبقٍ ضمن الإضافة؛ اختبار أجهزة هاتف فعلية NOT RUN.
