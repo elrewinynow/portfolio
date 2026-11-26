@@ -1,0 +1,22 @@
+{
+  "name": "elrewiny-brief-dashboard",
+  "account_id": "046dfdfbbef5bccb93d469ff723993ff",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-26",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+  },
+  "vars": { "OWNER_EMAIL": "mrelrewiny@gmail.com", "DASHBOARD_ORIGIN": "https://elrewiny-brief-dashboard.mrelrewiny.workers.dev" },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "elrewiny-brief",
+      "database_id": "f591c3ae-44b8-45b3-9bbc-c40a4acce92c",
+    },
+  ],
+}

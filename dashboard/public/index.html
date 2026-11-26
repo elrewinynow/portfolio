@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>مراجعة البريفات | أحمد الرويني</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <header>
+      <div class="identity">
+        <img src="/logo.png" width="55" height="43" alt="أحمد الرويني" />
+        <div>
+          <strong>مساحة التشخيص</strong
+          ><small>بريف واضح. جلسة أكثر تركيزًا.</small>
+        </div>
+      </div>
+      <div class="account">
+        <span id="owner"></span
+        ><button id="logout" type="button">تسجيل الخروج ↗</button>
+      </div>
+    </header>
+    <main>
+      <div class="intro">
+        <div>
+          <p class="eyebrow">إدارة جلسات التشخيص</p>
+          <h1>كل بريف، <em>وخطوته الجاية.</em></h1>
+          <p>
+            راجع وضع النشاط قبل الجلسة، وسجّل أولوياتك وملاحظاتك في مكان واحد.
+          </p>
+        </div>
+        <a
+          class="link"
+          href="https://elrewiny.com/Brief"
+          target="_blank"
+          rel="noopener noreferrer"
+          >افتح نموذج العميل ↗</a
+        >
+      </div>
+      <div id="message" role="status" tabindex="-1"></div>
+      <section class="stats" aria-label="ملخص الحالات">
+        <div><span>كل البريفات</span><strong id="count-all">—</strong></div>
+        <div><span>جديد</span><strong id="count-new">—</strong></div>
+        <div>
+          <span>قيد المراجعة</span><strong id="count-reviewing">—</strong>
+        </div>
+        <div>
+          <span>تمت المراجعة</span><strong id="count-reviewed">—</strong>
+        </div>
+        <div><span>مؤرشف</span><strong id="count-archived">—</strong></div>
+      </section>
+      <section class="workspace">
+        <div class="toolbar">
+          <div>
+            <h2>البريفات الواردة</h2>
+            <p class="muted">الحجز وتأكيد الموعد يظلان على نظملي.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button id="refresh" type="button" class="secondary">↻ تحديث</button
+            ><button id="export" type="button" class="secondary">
+              ↓ تصدير CSV
+            </button>
+          </div>
+        </div>
+        <form id="filters">
+          <div class="search">
+            <label for="query">ابحث عن نشاط أو مسؤول أو وسيلة تواصل</label
+            ><input
+              id="query"
+              type="search"
+              maxlength="120"
+              placeholder="اكتب اسمًا أو رقمًا…"
+            />
+          </div>
+          <div>
+            <label for="filter-status">الحالة</label
+            ><select id="filter-status">
+              <option value="">كل الحالات</option>
+              <option value="new">جديد</option>
+              <option value="reviewing">قيد المراجعة</option>
+              <option value="reviewed">تمت المراجعة</option>
+              <option value="archived">مؤرشف</option>
+            </select>
+          </div>
+          <button type="submit">بحث ←</button>
+        </form>
+        <p id="list-state" role="status"></p>
+        <div id="list" class="brief-list"></div>
+        <button id="more" class="secondary" hidden>عرض المزيد ↓</button>
+      </section>
+      <p class="footnote">
+        الردود وملاحظاتك خاصة بحسابك. التاريخ معروض بتوقيت القاهرة. ملف التصدير
+        يحتوي بيانات تواصل؛ احتفظ به في مكان خاص.
+      </p>
+    </main>
+    <dialog id="detail">
+      <div class="dialog-top">
+        <span class="eyebrow">مراجعة النشاط</span
+        ><button id="close" class="secondary" aria-label="إغلاق تفاصيل البريف">
+          إغلاق ×
+        </button>
+      </div>
+      <h2 id="detail-title"></h2>
+      <p id="detail-contact" class="muted"></p>
+      <p id="detail-date" class="muted"></p>
+      <div id="answers"></div>
+      <section class="review">
+        <h3>مراجعتك الخاصة</h3>
+        <p class="muted">
+          تغيير الحالة هنا لا يؤكد موعدًا ولا يرسل رسالة للعميل.
+        </p>
+        <form id="review-form">
+          <label for="review-status">حالة المراجعة</label
+          ><select id="review-status">
+            <option value="new">جديد</option>
+            <option value="reviewing">قيد المراجعة</option>
+            <option value="reviewed">تمت المراجعة</option>
+            <option value="archived">مؤرشف</option></select
+          ><label for="notes">ملاحظاتك وأولويات الجلسة</label
+          ><textarea
+            id="notes"
+            maxlength="8000"
+            rows="6"
+            placeholder="إيه اللي لاحظته؟ وإيه الأسئلة اللي محتاج تناقشها؟"
+          ></textarea>
+          <div class="save-row">
+            <button id="save" type="submit">حفظ المراجعة ✓</button
+            ><button id="reload-detail" class="secondary" type="button">
+              تحميل النسخة الحالية
+            </button>
+          </div>
+          <p id="save-message" role="status"></p>
+          <small id="updated" class="muted"></small>
+        </form>
+      </section>
+    </dialog>
+  </body>
+</html>
