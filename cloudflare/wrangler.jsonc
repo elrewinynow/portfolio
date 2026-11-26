@@ -1,0 +1,15 @@
+{
+  "name": "elrewiny-brief-api",
+  "account_id": "046dfdfbbef5bccb93d469ff723993ff",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-26",
+  "workers_dev": true,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "elrewiny-brief",
+      "database_id": "f591c3ae-44b8-45b3-9bbc-c40a4acce92c",
+    },
+  ],
+}

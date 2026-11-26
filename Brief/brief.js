@@ -1,4 +1,5 @@
 import { steps, validate } from "./schema.js";
+import { API_BASE } from "./config.js";
 const form = document.querySelector("form"),
   container = document.querySelector("#fields"),
   error = document.querySelector("#error"),
@@ -8,6 +9,8 @@ let step = 0,
   answers = {},
   requestId = crypto.randomUUID(),
   token = null,
+  tokenReadyAt = 0,
+  tokenExpiresAt = 0,
   busy = false;
 function collect() {
   for (const el of container.querySelectorAll("input,textarea,select")) {
@@ -112,12 +115,17 @@ back.addEventListener("click", () => {
   render(true);
 });
 async function getToken() {
-  const r = await fetch("/api/brief/challenge", { cache: "no-store" });
+  const r = await fetch(`${API_BASE}/api/brief/challenge`, {
+    cache: "no-store",
+    credentials: "omit",
+  });
   if (!r.ok)
     throw Error(
       "خدمة الإرسال مش متاحة دلوقتي. إجاباتك لسه موجودة؛ جرّب تاني بعد شوية.",
     );
   const body = await r.json();
+  tokenReadyAt = body.readyAt || Date.now() + 3100;
+  tokenExpiresAt = body.expiresAt || Date.now() + 7200000;
   return body.token;
 }
 form.addEventListener("submit", async (e) => {
@@ -146,9 +154,12 @@ form.addEventListener("submit", async (e) => {
   next.textContent = "جاري الإرسال…";
   error.textContent = "";
   try {
-    if (!token) token = await getToken();
-    const response = await fetch("/api/brief", {
+    if (!token || Date.now() >= tokenExpiresAt) token = await getToken();
+    const wait = Math.max(0, Math.min(4000, tokenReadyAt - Date.now()));
+    if (wait) await new Promise((resolve) => setTimeout(resolve, wait));
+    const response = await fetch(`${API_BASE}/api/brief`, {
       method: "POST",
+      credentials: "omit",
       headers: {
         "Content-Type": "application/json",
         "Idempotency-Key": requestId,

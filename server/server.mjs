@@ -18,6 +18,7 @@ export function createApp({
   origin = "http://127.0.0.1:3000",
   minAge = 3000,
   clock = () => Date.now(),
+  apiOnly = false,
 } = {}) {
   mkdirSync(dirname(dbPath), { recursive: true });
   const db = new DatabaseSync(dbPath);
@@ -75,6 +76,39 @@ export function createApp({
     try {
       const path = new URL(req.url, origin).pathname,
         ip = req.socket.remoteAddress || "unknown";
+      if (path.startsWith("/api/") && req.headers.origin === origin) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Vary", "Origin");
+        res.setHeader("Access-Control-Expose-Headers", "Retry-After");
+      }
+      if (path === "/api/brief" && req.method === "OPTIONS") {
+        const requestedHeaders = String(
+          req.headers["access-control-request-headers"] || "",
+        )
+          .toLowerCase()
+          .split(",")
+          .map((v) => v.trim())
+          .filter(Boolean);
+        if (
+          req.headers.origin !== origin ||
+          req.headers["access-control-request-method"] !== "POST" ||
+          requestedHeaders.some(
+            (v) => !["content-type", "idempotency-key"].includes(v),
+          )
+        ) {
+          return json(res, 403, { message: "مصدر الإرسال غير مسموح." });
+        }
+        res.writeHead(204, {
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers": "Content-Type, Idempotency-Key",
+          "Access-Control-Max-Age": "600",
+        });
+        return res.end();
+      }
+      if (path === "/healthz" && req.method === "GET") {
+        db.prepare("SELECT 1").get();
+        return json(res, 200, { status: "ok" });
+      }
       if (path.startsWith("/Brief") || path.startsWith("/api/"))
         res.setHeader(
           "Content-Security-Policy",
@@ -209,6 +243,10 @@ export function createApp({
       }
       if (path.startsWith("/api/"))
         return json(res, 405, { message: "الطلب غير متاح." });
+      if (apiOnly) {
+        res.writeHead(404);
+        return res.end("Not Found");
+      }
       if (!["GET", "HEAD"].includes(req.method))
         return json(res, 405, { message: "الطلب غير متاح." });
       const files = {
@@ -217,6 +255,7 @@ export function createApp({
         "/Brief/": "Brief/index.html",
         "/Brief/index.html": "Brief/index.html",
         "/Brief/brief.js": "Brief/brief.js",
+        "/Brief/config.js": "Brief/config.js",
         "/Brief/schema.js": "Brief/schema.js",
         "/Brief/brief.css": "Brief/brief.css",
         "/style.css": "style.css",
@@ -282,6 +321,7 @@ if (
     dbPath: process.env.BRIEF_DB_PATH,
     secret: process.env.BRIEF_SECRET,
     origin: process.env.PUBLIC_ORIGIN,
+    apiOnly: process.env.BRIEF_API_ONLY === "true",
   });
   const port = Number(process.env.PORT || 3000);
   app.server.listen(port, production ? "0.0.0.0" : "127.0.0.1", () =>
