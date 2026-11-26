@@ -1,0 +1,9 @@
+import {steps} from '../Brief/schema.js';
+const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const value=v=>Array.isArray(v)?v.join('، '):String(v??'');
+const date=v=>new Intl.DateTimeFormat('ar-EG',{dateStyle:'medium',timeStyle:'short',timeZone:'Africa/Cairo'}).format(new Date(v));
+export function printBrief(row){
+ const statuses={new:'جديد',reviewing:'قيد المراجعة',reviewed:'تمت المراجعة',archived:'مؤرشف'};
+ const sections=steps.map(step=>`<section><h2>${escape(step.title)}</h2><dl>${step.fields.filter(([k])=>value(row.answers[k])).map(([k,label])=>`<div class="answer"><dt>${escape(label.replace(/\s*\*$/,''))}</dt><dd dir="auto">${escape(value(row.answers[k]))}</dd></div>`).join('')||'<p>لم تُكتب إجابات في القسم ده.</p>'}</dl></section>`).join('');
+ return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>بريف — ${escape(row.brand)}</title><link rel="stylesheet" href="/print.css"><script src="/print-client.js" defer></script></head><body><nav><button id="print" type="button">حفظ PDF / طباعة</button><p>من وجهة الطباعة اختار «Save as PDF» لحفظ الملف. النسخة تشمل الملاحظات المحفوظة فقط.</p><a href="/">العودة للداشبورد</a></nav><header><img src="/logo.png" width="70" alt="أحمد الرويني"><p>جلسة التشخيص التسويقي · نسخة خاصة بالمالك</p><h1>${escape(row.brand)}</h1><p>اترسل ${escape(date(row.submitted_at))} — بتوقيت القاهرة</p><p class="identifier">رقم البريف: <bdi>${escape(row.id)}</bdi></p></header>${sections}<section><h2>مراجعتي الخاصة</h2><p>الحالة: ${escape(statuses[row.status]||row.status)}</p><p class="notes" dir="auto">${escape(row.notes||'لا توجد ملاحظات محفوظة.')}</p></section><footer>هذا البريف لا يؤكد حجز الجلسة أو موعدها. يحتوي بيانات خاصة؛ راجع محتواه قبل مشاركته.</footer></body></html>`;
+}

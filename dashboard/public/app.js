@@ -138,6 +138,7 @@ function links(value, wrap) {
 }
 function renderDetail(row) {
   current = row;
+  $("print-brief").href="/api/briefs/"+encodeURIComponent(row.id)+"/print";
   dirty = false;
   pending = null;
   $("detail-title").textContent = row.brand;
@@ -313,3 +314,5 @@ try {
 }
 
 $('logout').addEventListener('click',async()=>{if(dirty&&!confirm('عندك ملاحظات غير محفوظة. تخرج؟'))return;try{await api('/auth/logout',{method:'POST',headers:{'X-Requested-With':'brief-dashboard'}});location.assign('/login');}catch(e){alert(e.message);}});
+
+$('export-excel').addEventListener('click',async()=>{const button=$('export-excel');button.disabled=true;showMessage('جاري تجهيز ملف Excel…');try{const body=await (await api('/api/export.json?'+params())).json();const {makeWorkbook}=await import('./excel-export.js');const bytes=await makeWorkbook(body.rows);const url=URL.createObjectURL(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const a=document.createElement('a');a.href=url;a.download='briefs.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);showMessage('تم تجهيز ملف Excel للردود المطابقة للبحث الحالي.');}catch(e){showMessage(e.message);}finally{button.disabled=false;}});

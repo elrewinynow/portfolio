@@ -1,4 +1,5 @@
 import { authenticate, authRoute } from "./auth.js";
+import {printBrief} from "./print.js";
 const states = ["new", "reviewing", "reviewed", "archived"];
 const uuid =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -115,7 +116,7 @@ export async function handle(request, env, options = {}) {
             : null,
       });
     }
-    if (path === "/api/export.csv" && request.method === "GET") {
+    if (["/api/export.csv","/api/export.json"].includes(path) && request.method === "GET") {
       const f = filters(url),
         result = await env.DB.prepare(
           `SELECT b.id,b.brand,b.contact_name,b.phone,b.email,b.submitted_at,b.status,b.answers_json,coalesce(r.notes,'') AS notes FROM brief_submissions b LEFT JOIN brief_reviews r ON r.brief_id=b.id WHERE ${where} ORDER BY b.submitted_at DESC,b.id DESC LIMIT 501`,
@@ -129,6 +130,7 @@ export async function handle(request, env, options = {}) {
         });
       if (!await notExpired())
         return json(401, { message: "انتهت الجلسة؛ سجّل الدخول مجددًا." });
+      if(path === "/api/export.json")return json(200,{rows:result.results.map(row=>({...row,answers:JSON.parse(row.answers_json),answers_json:undefined}))});
       const columns = [
         "id",
         "brand",
@@ -163,6 +165,14 @@ export async function handle(request, env, options = {}) {
           "Content-Disposition": 'attachment; filename="briefs.csv"',
         },
       });
+    }
+    const printMatch=path.match(/^\/api\/briefs\/([0-9a-f-]+)\/print$/i);
+    if(printMatch && request.method === "GET"){
+      if(!uuid.test(printMatch[1]))return json(400,{message:"رقم البريف غير صالح."});
+      const row=await env.DB.prepare("SELECT b.id,b.brand,b.submitted_at,b.status,b.answers_json,coalesce(r.notes,'') AS notes FROM brief_submissions b LEFT JOIN brief_reviews r ON r.brief_id=b.id WHERE b.id=?").bind(printMatch[1]).first();
+      if(!row)return json(404,{message:"البريف غير موجود."});
+      if(!await notExpired())return json(401,{message:"انتهت الجلسة؛ سجّل الدخول مجددًا."});
+      return new Response(printBrief({...row,answers:JSON.parse(row.answers_json)}),{headers:{...security,"Content-Type":"text/html; charset=utf-8"}});
     }
     const match = path.match(/^\/api\/briefs\/([0-9a-f-]+)$/i);
     if (match) {
@@ -315,6 +325,9 @@ export async function handle(request, env, options = {}) {
         "/style.css",
         "/logo.png",
         "/schema.js",
+        "/excel-export.js",
+        "/print.css",
+        "/print-client.js",
       ].includes(path)
     )
       return json(404, { message: "الصفحة غير موجودة." });
