@@ -53,9 +53,9 @@ export async function handle(request, env, options = {}) {
       path = url.pathname;
     if (path === "/healthz") return json(200, { status: "ok" }); // No database access or private counts.
     if(path.startsWith('/auth/')){const response=await authRoute(request,env,options);for(const [k,v] of Object.entries(security))response.headers.set(k,v);return response;}
-    if(['/login','/login.html','/login.js','/style.css','/logo.png'].includes(path)&&request.method==='GET'){
+    if(['/login','/login.html','/login.js','/style.css','/logo.png','/manifest.webmanifest','/install.js','/icon-32.png','/icon-180.png','/icon-192.png','/icon-512.png','/icon-maskable-512.png'].includes(path)&&request.method==='GET'){
       const target=new URL(request.url);if(path==='/login')target.pathname='/login.html';
-      const response=await env.ASSETS.fetch(new Request(target,request));const out=new Response(response.body,response);for(const [k,v] of Object.entries(security))out.headers.set(k,v);return out;
+      const response=await env.ASSETS.fetch(new Request(target,request));const out=new Response(response.body,response);for(const [k,v] of Object.entries(security))out.headers.set(k,v);if(path==="/manifest.webmanifest")out.headers.set("Content-Type","application/manifest+json; charset=utf-8");return out;
     }
     const auth = await authenticate(request, env, options);
     if(auth.status===401&&path==='/'&&request.method==='GET')return new Response(null,{status:303,headers:{...security,Location:'/login'}});
